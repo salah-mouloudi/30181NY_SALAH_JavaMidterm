@@ -1,13 +1,19 @@
 package json.parser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-public class CnnAPI {
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
+class CNNAPI{
     /*
       You can get API_KEY from this below link. Once you have the API_KEY, you can fetch the top-headlines news.
       https://newsapi.org/s/cnn-api
@@ -20,19 +26,7 @@ public class CnnAPI {
       After getting Json Format of the news, You can go to json validator link: https://jsonlint.com/ to see
       how it can be parsed.
 
-      "articles": [{
-		"source": {
-			"id": "cnn",
-			"name": "CNN"
-		},
-		"author": null,
-		"title": "Who is affected by a shutdown? - CNN Video",
-		"description": "CNN's Tom Foreman breaks down who is affected by a federal government partial shutdown.",
-		"url": "http://us.cnn.com/videos/politics/2018/12/22/federal-partial-shutdown-by-the-numbers-foreman-ctn-vpx.cnn",
-		"urlToImage": "https://cdn.cnn.com/cnnnext/dam/assets/181202171029-government-shutdown-capitol-file-super-tease.jpg",
-		"publishedAt": "2018-12-23T01:09:50.8583193Z",
-		"content": "Chat with us in Facebook Messenger. Find out what's happening in the world as it unfolds."
-	   },{}]
+
 
 	   Read the articles array and construct Headline news as source, author, title,description,url,urlToImage,publishedAt
 	   and content. You need to design News Data Model and construct headline news.
@@ -45,13 +39,80 @@ public class CnnAPI {
 
      */
 
-    public static void main(String[] args) throws IOException, JSONException {
-        String apiKey = "";
-        String URL = "https://newsapi.org/v2/top-headlines?sources=cnn&apiKey=" + apiKey;
+    //    public static void main(String[] args) throws IOException, JSONException {
+//        String apiKey = "b5cb2489183c441e851e3e7c468bc199";
+//        String URL = "https://newsapi.org/v2/top-headlines?sources=cnn&apiKey=b5cb2489183c441e851e3e7c468bc199" + apiKey;
+//
+//        JSONObject rootObject = new JSONObject(new String(Files.readAllBytes(new File("src/json/parser/data.json").toPath())));
+//
+//        // Continue implementing here..
+//    }
+//
+//}
+    public static void main(String[] args) throws Exception {
 
-        JSONObject rootObject = new JSONObject(new String(Files.readAllBytes(new File("src/json/parser/data.json").toPath())));
+        String URL = "https://newsapi.org/v2/top-headlines?sources=cnn&apiKey=b5cb2489183c441e851e3e7c468bc199";
+        NewsDataClass news = null;
+        List<NewsDataClass> list1 = new ArrayList<>();
+        URL url1 = new URL(URL);
+        URLConnection request = url1.openConnection();
+        request.connect();
+        JsonArray jsonArray = null;
+        JsonObject rootObj = null;
+        JsonParser jp = new JsonParser();
+        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+        if (root instanceof JsonObject) {
+            rootObj = root.getAsJsonObject();
+        } else if (root instanceof JsonArray) {
+            jsonArray = root.getAsJsonArray();
+        }
+        if (jsonArray == null)
+            jsonArray = rootObj.getAsJsonArray("articles");//Storing J object in the Array
 
-        // Continue implementing here..
+        String source = null;
+        String author = null;
+        String title = null;
+        String description = null;
+        String url = null;
+        String urlToImage = null;
+        String publishedAt = null;
+        String content = null;
+        for (int i = 0; i < ((JsonArray) jsonArray).size() - 1; i++) {
+
+            try {
+                JsonObject jsonobject = jsonArray.get(i).getAsJsonObject();
+                System.out.println("\n**************************************************************************************************************************************************************************************************************************************************************************************************");
+                source = jsonobject.get("source").toString();
+                System.out.println("\nSOURCE: "+source);
+                author = jsonobject.get("author").toString();
+                System.out.println("AUTHOR: "+author);
+                title = jsonobject.get("title").toString();
+                System.out.println("TITLE: "+title);
+                description = jsonobject.get("description").toString();
+                System.out.println("DESCRIPTION: "+description);
+                url = jsonobject.get("url").toString();
+                System.out.println("URL: "+ url);
+                urlToImage = jsonobject.get("urlToImage").toString();
+                System.out.println("URL TO IMAGE: "+urlToImage);
+                publishedAt = jsonobject.get("publishedAt").toString();
+                System.out.println("PUBLISHED AT: "+publishedAt);
+                content = jsonobject.get("content").toString();
+                System.out.println("CONTENT: "+content);
+
+
+                news = new NewsDataClass(source, author, title, description, url, urlToImage, publishedAt, content);
+                list1.add(news);
+
+
+            } catch (Exception ex) {
+
+            }
+        }
+
     }
 
+    private static class NewsDataClass {
+        public NewsDataClass(String source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+        }
+    }
 }

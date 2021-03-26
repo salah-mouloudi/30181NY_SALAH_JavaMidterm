@@ -1,6 +1,7 @@
 package datastructure;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class CollectionView {
 
@@ -18,6 +19,23 @@ public class CollectionView {
         map.put(5, "San Jose");
         map.put(6, "Seattle");
 
+        for(int i = 1 ; i <= 6 ; i  ++){
+            System.out.println("the key is : "+i+" and the value is : "+map.get(i));
+
+        }
+        for(HashMap.Entry<Integer, String> m: map.entrySet()){
+            System.out.println(m.getValue());
+        }
+
+        Iterator<Integer> it = map.keySet().iterator();
+
+        while(it.hasNext()){
+            int key=  it.next();
+            String value = map.get(key);
+
+            System.out.println("the key num is : "+ key + " and the value is : "+ value);
+
+        }
     }
 
 }

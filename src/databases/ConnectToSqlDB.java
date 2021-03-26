@@ -47,7 +47,7 @@ public class ConnectToSqlDB {
         User user = null;
         try {
             Connection conn = connectToSqlDatabase();
-            String query = "SELECT * FROM Students";
+            String query = "SELECT * FROM pnt.students";
             // create the java statement
             Statement st = conn.createStatement();
             // execute the query, and get a java resultset
@@ -199,7 +199,7 @@ public class ConnectToSqlDB {
         try {
             connectToSqlDatabase();
             ps = connect.prepareStatement("INSERT INTO " + tableName + " ( " + columnName1 + "," + columnName2 + " ) VALUES(?,?)");
-            ps.setString(1, "Ankita Sing");
+            ps.setString(2, "Ankita Sing");
             ps.setInt(2, 3590);
             ps.executeUpdate();
 

@@ -58,20 +58,36 @@ public class ProcessStudentInfo {
         seleniumStudents = xmlReader.parseData(tag, pathSelenium);
 
         // Parse Data using parseData method and then store data into QTP ArrayList.
+        qtpStudents = xmlReader.parseData(tag, pathQtp);
 
         // Add Selenium ArrayList data into map.
+        list.put("SeleniumStudents ", seleniumStudents);
 
         // Add Qtp ArrayList data into map.
+        list.put("QTPStudents ", qtpStudents);
 
         // Retrieve map data and display output for both maps.
+        for (List<Student> student : list.values()) {
+            for (Student s : student) {
+                System.out.println("*****************************************************************");
+                System.out.println("Student ID: " + s.id);
 
+                System.out.println("First Name: " + s.firstName);
 
+                System.out.println("Last Name: " + s.lastName);
 
-        List<Student> stList = new ArrayList<>();
+                System.out.println("Score: " + s.score);
+
+            }
+
+           // Method 2
+
+                    List<Student> stList = new ArrayList<>();
         for (Student st : stList) {
             System.out.println(st.getFirstName() + " " + st.getLastName() + " " + st.getScore() + " " + st.getId());
         }
 
-    }
+        }
 
+    }
 }

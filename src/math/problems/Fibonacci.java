@@ -10,6 +10,21 @@ public class Fibonacci {
 
     public static void main(String[] args) {
 
+        int Numbers = 40;
+        int beforeNumber = 0;
+        int nextNumber = 1;
+
+        System.out.println("Fibonacci numbers of "+Numbers+ " are: ");
+        for (int i = 1; i <= Numbers; i++){
+            System.out.println(beforeNumber+"");
+
+            int sum = beforeNumber + nextNumber;
+            beforeNumber = nextNumber;
+            nextNumber = sum;
+        }
+
+
+
 
     }
 
